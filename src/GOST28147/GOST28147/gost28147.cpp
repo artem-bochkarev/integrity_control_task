@@ -2,6 +2,8 @@
 #include "cassert"
 #include "stdlib.h"
 
+const uint IMITOVSTAVKA_CYCLES_CNT = 16;
+
 uint f( uint A, uint K, const gost::replace_key& key )
 {
     uint c = A ^ K;
@@ -34,4 +36,22 @@ gost::block cycles( gost::block in, gost::replace_key& rkey, gost::key& key, uin
         res.B = tmpA;
     }
     return res;
+}
+
+gost::block vstavka( uint* in, uint size, gost::replace_key& rkey, gost::key& key )
+{
+    gost::block curr;
+    curr.A = 0;
+    curr.B = 0;
+    for ( int i=0; i<size/2; ++i )
+    {
+        curr.A ^= in[2*i];
+        curr.B ^= in[2*i + 1];
+        curr = cycles( curr, rkey, key, IMITOVSTAVKA_CYCLES_CNT );
+    }
+    if ( size % 2 != 0 ) {
+        curr.A ^= in[size-1];
+        curr = cycles( curr, rkey, key, IMITOVSTAVKA_CYCLES_CNT );
+    }
+    return curr;
 }

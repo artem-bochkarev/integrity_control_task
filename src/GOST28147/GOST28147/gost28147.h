@@ -19,6 +19,7 @@ namespace gost
         uint A, B;
     };
 
+    block vstavka(uint* in, uint size, gost::replace_key& rkey, gost::key& key);
 
 };
 
