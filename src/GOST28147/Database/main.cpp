@@ -1,6 +1,7 @@
-#include "gost28147.h"
 #include <iostream>
 #include <conio.h>
+#include <boost/format.hpp>
+#include "FileHash.h"
 
 gost::replace_key rkey = 
 {
@@ -14,12 +15,27 @@ gost::replace_key rkey =
   0x0,0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8,0x9,0xA,0xB,0xC,0xD,0xE,0xF
  };
 
+gost::key key =
+{
+    0xBAADF00D,
+    0xBEEFCACE,
+    0xCAFED00D,
+    0xDEADBABE,
+    0xDEADBEEF,
+    0xDEADC0DE,
+    0xDEADF00D,
+    0xFADEDEAD
+};
+
 int main()
 {
-    uint A, B;
+    //uint A, B;
     uint K = 0xBAADF00D;
-    std::cin >> A;
-    std::cout << f( A, K, rkey );
+    gost::block f1 = count_hash( "T:\\data\\programming\\asm\\2.bmp", rkey, key );
+    gost::block f2 = count_hash( "T:\\data\\programming\\asm\\1.bmp", rkey, key );
+    __int64 a = f1.toInt64();
+    __int64 b = f2.toInt64();
+    std::cout << boost::format("f1 = %016x \nf2 = %016x") % a % b; 
     _getch();
 
 }

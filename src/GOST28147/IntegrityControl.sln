@@ -2,11 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GOST28147", "GOST28147\GOST28147.vcproj", "{4A726FC8-2AD3-4604-9503-44B2E76CFC8E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{482220B5-A546-414F-82A9-4B6415383E36} = {482220B5-A546-414F-82A9-4B6415383E36}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Database", "Database\Database.vcproj", "{482220B5-A546-414F-82A9-4B6415383E36}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4A726FC8-2AD3-4604-9503-44B2E76CFC8E} = {4A726FC8-2AD3-4604-9503-44B2E76CFC8E}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

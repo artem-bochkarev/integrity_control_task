@@ -17,10 +17,15 @@ namespace gost
     struct block
     {
         uint A, B;
+        __int64 toInt64()
+        {
+            __int64 a = A;
+            a <<= 32;
+            a |= B;
+            return a;
+        }
     };
 
     block vstavka(uint* in, uint size, gost::replace_key& rkey, gost::key& key);
 
 };
-
-uint f( uint A, uint K, const gost::replace_key& key );

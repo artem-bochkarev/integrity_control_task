@@ -1,5 +1,4 @@
-#include <boost/filesystem.hpp>
-#include <Database/gost28147.h>
+#include "GOST28147\gost28147.h"
 
-gost::block count_hash( const char* filename );
+gost::block count_hash( const char* filename, gost::replace_key& rkey, gost::key& key );
 
