@@ -5,8 +5,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GOST28147", "GOST28147\GOST
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Database", "Database\Database.vcproj", "{482220B5-A546-414F-82A9-4B6415383E36}"
 	ProjectSection(ProjectDependencies) = postProject
+		{C6C20A1D-C572-444C-8891-94341DC19F0B} = {C6C20A1D-C572-444C-8891-94341DC19F0B}
 		{4A726FC8-2AD3-4604-9503-44B2E76CFC8E} = {4A726FC8-2AD3-4604-9503-44B2E76CFC8E}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tools", "Tools\Tools.vcproj", "{C6C20A1D-C572-444C-8891-94341DC19F0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,6 +25,10 @@ Global
 		{482220B5-A546-414F-82A9-4B6415383E36}.Debug|Win32.Build.0 = Debug|Win32
 		{482220B5-A546-414F-82A9-4B6415383E36}.Release|Win32.ActiveCfg = Release|Win32
 		{482220B5-A546-414F-82A9-4B6415383E36}.Release|Win32.Build.0 = Release|Win32
+		{C6C20A1D-C572-444C-8891-94341DC19F0B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C6C20A1D-C572-444C-8891-94341DC19F0B}.Debug|Win32.Build.0 = Debug|Win32
+		{C6C20A1D-C572-444C-8891-94341DC19F0B}.Release|Win32.ActiveCfg = Release|Win32
+		{C6C20A1D-C572-444C-8891-94341DC19F0B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

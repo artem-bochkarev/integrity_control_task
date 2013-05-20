@@ -21,7 +21,7 @@ uint f( uint A, uint K, const gost::replace_key& key )
     return res;
 }
 
-gost::block cycles( gost::block in, gost::replace_key& rkey, gost::key& key, uint cnt )
+gost::block cycles( gost::block in, const gost::replace_key& rkey, const gost::key& key, uint cnt )
 {
     gost::block res;
     res.A = in.A;
@@ -38,7 +38,7 @@ gost::block cycles( gost::block in, gost::replace_key& rkey, gost::key& key, uin
     return res;
 }
 
-gost::block gost::vstavka( uint* in, uint size, gost::replace_key& rkey, gost::key& key )
+gost::block gost::vstavka( const uint* in, uint size, const gost::replace_key& rkey, const gost::key& key )
 {
     gost::block curr;
     curr.A = 0;

@@ -3,7 +3,7 @@
 #include <memory>
 
 
-gost::block count_hash( const char* filename, gost::replace_key& rkey, gost::key& key )
+gost::block count_hash( const char* filename, const gost::replace_key& rkey, const gost::key& key )
 {
     std::ifstream in( filename, std::ios::in | std::ios::binary | std::ios::ate );
     //in.open();
