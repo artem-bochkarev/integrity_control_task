@@ -3,6 +3,7 @@
 #include <string>
 #include "Tools/Logger.h"
 #include <windows.h>
+#include <cassert>
 
 namespace Tools
 {
@@ -26,6 +27,7 @@ namespace Tools
             *logger << "[FAILED] " << msg << "\n";
             *logger << "[DESCRIPTION] " << descr << "\n";
         }
+        assert(0);
         throw std::runtime_error( msg );
     }
 

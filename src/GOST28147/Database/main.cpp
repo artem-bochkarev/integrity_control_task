@@ -2,6 +2,9 @@
 #include <conio.h>
 #include <boost/format.hpp>
 #include "FileHash.h"
+#include "Database.h"
+#include <cassert>
+#include <stdexcept>
 
 gost::replace_key rkey = 
 {
@@ -27,6 +30,8 @@ gost::key key =
     0xFADEDEAD
 };
 
+const char* dbname = "test_database.sql";
+
 int main()
 {
     //uint A, B;
@@ -35,7 +40,23 @@ int main()
     gost::block f2 = count_hash( "T:\\data\\programming\\asm\\1.bmp", rkey, key );
     __int64 a = f1.toInt64();
     __int64 b = f2.toInt64();
-    std::cout << boost::format("f1 = %016x \nf2 = %016x") % a % b; 
+    std::cout << boost::format("f1 = %016x \nf2 = %016x") % a % b << std::endl; 
+
+    try
+    {
+        //Database::createNewDatabase(dbname);
+        //Database::fillTestDatabase( dbname, rkey, key );
+
+        DatabasePtr database = Database::openDatabase(dbname);
+        database->setKeys( rkey, key );
+        std::cout << "File 2.bmp: " << Database::resultToStr( database->checkFile("T:\\data\\programming\\asm\\2.bmp") ) << std::endl;
+        std::cout << "File 1.bmp: " << Database::resultToStr( database->checkFile("T:\\data\\programming\\asm\\1.bmp") ) << std::endl;
+    }catch(std::runtime_error& err)
+    {
+        std::cerr << err.what() << std::endl;
+        assert(0);
+    }
+
     _getch();
 
 }
