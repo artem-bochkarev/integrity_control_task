@@ -16,7 +16,7 @@ public:
     };
     virtual ~Database() {};
     static void createNewDatabase( const char* name );
-    static void fillDatabase( const char* name );
+    static void fillDatabase( const char* name, const char* startFolder, int depth, const gost::replace_key& rkey, const gost::key& key );
     static void fillTestDatabase( const char* name, const gost::replace_key& rkey, const gost::key& key );
     
     static DatabasePtr  openDatabase( const char* name );

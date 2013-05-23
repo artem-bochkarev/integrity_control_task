@@ -51,6 +51,22 @@ int main()
         database->setKeys( rkey, key );
         std::cout << "File 2.bmp: " << Database::resultToStr( database->checkFile("T:\\data\\programming\\asm\\2.bmp") ) << std::endl;
         std::cout << "File 1.bmp: " << Database::resultToStr( database->checkFile("T:\\data\\programming\\asm\\1.bmp") ) << std::endl;
+
+        //Database::fillDatabase( dbname, "T:\\Data\\", 3, rkey, key );
+
+
+        std::cout << "-------ALL should be MATCH--------" << std::endl;
+        std::cout << "File ConsoleApplication1.exe: " << Database::resultToStr( database->checkFile("T:\\Data\\Programming\\asm\\ConsoleApplication1.exe") ) << std::endl;
+        std::cout << "File simpleCPP.exe: " << Database::resultToStr( database->checkFile("T:\\Data\\Programming\\asm\\simpleCPP.exe") ) << std::endl;
+        std::cout << "File bmpChanger.exe: " << Database::resultToStr( database->checkFile("T:\\Data\\Programming\\asm\\bmpChanger.exe") ) << std::endl;
+        std::cout << "File a+b.exe: " << Database::resultToStr( database->checkFile("T:\\Data\\Programming\\asm\\a+b.exe") ) << std::endl;
+        std::cout << "File maxima-5.17.0.exe: " << Database::resultToStr( database->checkFile("T:\\Data\\Files\\maxima\\maxima-5.17.0.exe") ) << std::endl;
+        std::cout << "File WinDjView-0.4.2.exe: " << Database::resultToStr( database->checkFile("T:\\Data\\Files\\Books\\WinDjView-0.4.2.exe") ) << std::endl;
+
+        std::cout << "-------ALL should be NOT_EXIST--------" << std::endl;
+        std::cout << "File maxima-5.17.0.exe: " << Database::resultToStr( database->checkFile("T:\\Dat\\Files\\maxima\\maxima-5.17.0.exe") ) << std::endl;
+        std::cout << "File WinDjView-0.4.2.exe: " << Database::resultToStr( database->checkFile("Data\\Files\\Books\\WinDjView-0.4.2.exe") ) << std::endl;
+        std::cout << "File maxima-5.17.0.exe: " << Database::resultToStr( database->checkFile("T:\\Data\\Files\\maxima\\maxima-5.1.0.exe") ) << std::endl;
     }catch(std::runtime_error& err)
     {
         std::cerr << err.what() << std::endl;
