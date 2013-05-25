@@ -11,6 +11,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Database", "Database\Databa
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tools", "Tools\Tools.vcproj", "{C6C20A1D-C572-444C-8891-94341DC19F0B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleRunner", "SimpleRunner\SimpleRunner.vcproj", "{45096A9D-0E06-473C-8848-3F2F3B82D18A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{482220B5-A546-414F-82A9-4B6415383E36} = {482220B5-A546-414F-82A9-4B6415383E36}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -29,6 +34,10 @@ Global
 		{C6C20A1D-C572-444C-8891-94341DC19F0B}.Debug|Win32.Build.0 = Debug|Win32
 		{C6C20A1D-C572-444C-8891-94341DC19F0B}.Release|Win32.ActiveCfg = Release|Win32
 		{C6C20A1D-C572-444C-8891-94341DC19F0B}.Release|Win32.Build.0 = Release|Win32
+		{45096A9D-0E06-473C-8848-3F2F3B82D18A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{45096A9D-0E06-473C-8848-3F2F3B82D18A}.Debug|Win32.Build.0 = Debug|Win32
+		{45096A9D-0E06-473C-8848-3F2F3B82D18A}.Release|Win32.ActiveCfg = Release|Win32
+		{45096A9D-0E06-473C-8848-3F2F3B82D18A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,6 +23,7 @@ public:
     static const char* resultToStr( Result );
 
     virtual Result checkFile( const char* name ) const = 0;
+    virtual void addFile( const char* name ) const = 0;
     virtual void setKeys(const gost::replace_key&, const gost::key&) = 0;
     
 };

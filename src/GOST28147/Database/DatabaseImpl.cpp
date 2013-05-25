@@ -48,6 +48,12 @@ Database::Result DatabaseImpl::checkFile( const char* name ) const
         return Database::NOT_MATCH;
 }   
 
+void DatabaseImpl::addFile( const char* name ) const
+{
+    std::string sql = DatabaseImpl::insertFileStmt( name, rkey, key );
+    DatabaseImpl::runSimpleNoResultSQL( db, sql.c_str() );
+}   
+
 void DatabaseImpl::setKeys(const gost::replace_key& r , const gost::key& k)
 {
     rkey = r;
@@ -78,14 +84,19 @@ void DatabaseImpl::runSimpleNoResultSQL( sqlite3 *db, const char* sqlstr, bool c
     sqlite3_finalize( ppStmt );
 }
 
-std::string DatabaseImpl::insertFileStmt( const char* filename, const gost::replace_key& rkey, const gost::key& key )
+std::string DatabaseImpl::insertFileStmt( const char* filename, const gost::replace_key& rkey, const gost::key& key, bool replaceIfExist )
 {
     gost::block f = count_hash( filename, rkey, key );
     __int64 a = f.toInt64();
 
     std::stringstream value;
     value << a;
-    std::string sql = "INSERT OR REPLACE INTO files values( \'";
+    std::string sql;
+    if (replaceIfExist == true)
+        sql = "INSERT OR REPLACE INTO files values( \'";
+    else
+        sql = "INSERT INTO files values( \'";
+
     sql += filename;
     sql += "\', ";
     sql += value.str();
