@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <iostream>
 #include <boost/filesystem.hpp>
 
 std::map<std::string, DatabasePtr> databases;
