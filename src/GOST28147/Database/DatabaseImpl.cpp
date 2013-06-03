@@ -2,7 +2,10 @@
 #include <sstream>
 
 Tools::Logger* logger = 0;
-int hashColumn = 1;
+const int hashColumn = 1;
+const int keyColumn = 1;
+const int rkeyID = 1;
+const int keyID = 2;
 
 DatabaseImpl::DatabaseImpl(const char *name)
 :valid(false)
@@ -16,6 +19,39 @@ DatabaseImpl::~DatabaseImpl()
     DatabaseImpl::standardDbClose( db );
 }
 
+void checkPrepare( sqlite3 * db, int rc, bool closeIfFail )
+{
+    if( rc != SQLITE_OK )
+    {
+        std::string errmsg(sqlite3_errmsg(db));
+        if ( closeIfFail )
+            sqlite3_close(db);
+        Tools::throwDetailedFailed( "Can't prepare statement", errmsg.c_str(), logger );
+    }
+}
+
+void checkStepNoRes( sqlite3 * db, int rc, bool closeIfFail )
+{
+    if( rc != SQLITE_DONE )
+    {
+        std::string errmsg(sqlite3_errmsg(db));
+        if ( closeIfFail )
+            sqlite3_close(db);
+        Tools::throwDetailedFailed( "Can't step statement", errmsg.c_str(), logger );
+    }
+}
+
+void checkStepRes( sqlite3 * db, int rc, bool closeIfFail )
+{
+    if( rc != SQLITE_ROW )
+    {
+        if ( rc != SQLITE_DONE )
+            Tools::throwDetailedFailed( "Can't evaluate statement", sqlite3_errmsg(db), logger );
+        assert(0);
+        //return Database::NOT_EXIST;
+    }
+}
+
 Database::Result DatabaseImpl::checkFile( const char* name ) const
 {
     sqlite3_stmt *ppStmt;
@@ -24,11 +60,7 @@ Database::Result DatabaseImpl::checkFile( const char* name ) const
     sql += "\';";
     //const char *pzTail;
     int rc = sqlite3_prepare_v2( db, sql.c_str(), -1, &ppStmt, 0 );
-
-    if( rc != SQLITE_OK )
-    {
-        Tools::throwDetailedFailed( "Can't prepare statement", sqlite3_errmsg(db), logger );
-    }
+    checkPrepare( db, rc, false );
 
     rc = sqlite3_step( ppStmt );
     if( rc != SQLITE_ROW )
@@ -60,27 +92,43 @@ void DatabaseImpl::setKeys(const gost::replace_key& r , const gost::key& k)
     key = k;
 }
 
+void DatabaseImpl::readKeys()
+{
+    sqlite3_stmt *ppStmt;
+    std::string sql = "SELECT * FROM keys WHERE id = ?1"; // ToDo
+    int rc = sqlite3_prepare_v2( db, sql.c_str(), -1, &ppStmt, 0 );
+    checkPrepare( db, rc, false );
+    sqlite3_bind_int( ppStmt, keyColumn, rkeyID );
+
+    rc = sqlite3_step( ppStmt );
+    checkStepRes( db, rc, false );
+    
+    int len = sqlite3_column_bytes( ppStmt, keyColumn );
+    assert( len == sizeof(gost::replace_key) );
+    memcpy( rkey.table, sqlite3_column_blob( ppStmt, keyColumn ), len );
+
+    sqlite3_reset( ppStmt );
+    sqlite3_clear_bindings( ppStmt );
+    sqlite3_bind_int( ppStmt, keyColumn, keyID );
+
+    rc = sqlite3_step( ppStmt );
+    checkStepRes( db, rc, false );
+    
+    len = sqlite3_column_bytes( ppStmt, keyColumn );
+    assert( len == sizeof(gost::key) );
+    memcpy( key.X, sqlite3_column_blob( ppStmt, keyColumn ), len );
+
+    sqlite3_finalize( ppStmt );
+}
+
 void DatabaseImpl::runSimpleNoResultSQL( sqlite3 *db, const char* sqlstr, bool closeIfFail )
 {
     sqlite3_stmt *ppStmt;
     int rc = sqlite3_prepare_v2( db, sqlstr, -1, &ppStmt, 0 );
-
-    if( rc != SQLITE_OK )
-    {
-        std::string errmsg(sqlite3_errmsg(db));
-        if ( closeIfFail )
-            sqlite3_close(db);
-        Tools::throwDetailedFailed( "Can't prepare statement", errmsg.c_str(), logger );
-    }
+    checkPrepare( db, rc, closeIfFail );
 
     rc = sqlite3_step( ppStmt );
-    if( rc != SQLITE_DONE )
-    {
-        std::string errmsg(sqlite3_errmsg(db));
-        if ( closeIfFail )
-            sqlite3_close(db);
-        Tools::throwDetailedFailed( "Can't step statement", errmsg.c_str(), logger );
-    }
+    checkStepNoRes( db, rc, closeIfFail );
     sqlite3_finalize( ppStmt );
 }
 
@@ -103,6 +151,29 @@ std::string DatabaseImpl::insertFileStmt( const char* filename, const gost::repl
     sql += " );";
     return sql;
 }
+
+void DatabaseImpl::insertKey( sqlite3 *db, const char* bytes, int size, int id, bool replaceIfExist, bool closeIfFail )
+{
+    std::string sql;
+    if (replaceIfExist == true)
+        sql = "INSERT OR REPLACE INTO keys values( ?1, ?2 );\'";
+    else
+        sql = "INSERT INTO keys values( ?1, ?2 );\'";
+
+    sqlite3_stmt *ppStmt;
+    int rc = sqlite3_prepare_v2( db, sql.c_str(), -1, &ppStmt, 0 );
+    checkPrepare( db, rc, closeIfFail );
+
+    sqlite3_bind_int( ppStmt, 1, id );
+    sqlite3_bind_blob( ppStmt, 2, bytes, size, SQLITE_STATIC );
+
+    rc = sqlite3_step( ppStmt );
+    checkStepNoRes( db, rc, closeIfFail );
+
+    sqlite3_finalize( ppStmt );
+}
+
+
 
 void DatabaseImpl::standardDbClose( sqlite3 *db, bool bThrowException )
 {
@@ -127,9 +198,14 @@ sqlite3* DatabaseImpl::standardDbOpen( const char* filename, bool bThrowExceptio
         std::string errmsg(sqlite3_errmsg(db));
         sqlite3_close(db);
         if ( bThrowException )
+        {
             Tools::throwDetailedFailed( "Can't open database", errmsg.c_str(), logger );
+        }
         else
+        {
+            assert(0);
             return 0;
+        }
     }
     return db;
 }

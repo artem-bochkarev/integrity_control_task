@@ -43,6 +43,7 @@
 				PreprocessorDefinitions=",UNICODE,WIN32,QT_LARGEFILE_SUPPORT;QT_NO_DEBUG,NDEBUG;QT_CORE_LIB;QT_GUI_LIB"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="false"
+				ObjectFile="$(IntDir)\$(ProjectName)\"
 				DebugInformationFormat="0"
 			/>
 			<Tool

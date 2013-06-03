@@ -29,9 +29,14 @@ void Database::createNewDatabase( const char* name )
 
     std::string sql = "CREATE TABLE IF NOT EXISTS files ( \
                       filename VARCHAR(2048) PRIMARY KEY, \
-                      hash INT8 \
+                      hash INT8                           \
                       );";
    
+    DatabaseImpl::runSimpleNoResultSQL( db, sql.c_str() );
+    sql = "CREATE TABLE IF NOT EXISTS keys ( \
+          id INT PRIMARY KEY,  \
+          key BLOB             \
+          );";
     DatabaseImpl::runSimpleNoResultSQL( db, sql.c_str() );
     DatabaseImpl::standardDbClose( db, true );
 }
@@ -84,6 +89,14 @@ void Database::fillDatabase( const char* name, const char* startFolder, int dept
     using namespace boost::filesystem;
     path start(startFolder);
     scanFolder( db, start, depth, rkey, key);
+    DatabaseImpl::standardDbClose( db, true );
+}
+
+void Database::putKeysToDatabase( const char* name, const gost::replace_key& rkey, const gost::key& key )
+{
+    sqlite3 *db = DatabaseImpl::standardDbOpen( name, true );
+    DatabaseImpl::insertKey( db, reinterpret_cast<const char*>(&rkey.table[0][0]), sizeof(gost::replace_key), 1 );
+    DatabaseImpl::insertKey( db, reinterpret_cast<const char*>(&key.X[0]), sizeof(gost::key), 2 );
     DatabaseImpl::standardDbClose( db, true );
 }
 

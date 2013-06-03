@@ -9,6 +9,8 @@ Source: "CreateDatabase.exe"; DestDir: "{app}"
 ;Source: "Database.dll"; DestDir: "{app}"
 ;Source: "GOST28147.dll"; DestDir: "{app}"
 Source: "sqlite3.dll"; DestDir: "{app}"
+Source: "QtCore4.dll"; DestDir: "{app}"
+Source: "QtGui4.dll";  DestDir: "{app}"
 
 [Run]
 Filename: "{app}\CreateDatabase.exe"
