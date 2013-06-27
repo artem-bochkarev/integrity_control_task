@@ -45,7 +45,7 @@ void CreateDatabase::createPressed( )
         Database::fillDatabase( dbname, dir.toAscii().constData(), -1, rkey, key );
     }
     Database::putKeysToDatabase( dbname, rkey, key );
-    
+    QApplication::quit();
 }
 
 void CreateDatabase::addPressed( )
